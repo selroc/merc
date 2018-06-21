@@ -67,9 +67,9 @@ object Main {
     val input = new ANTLRFileStream(sourceName)
 
     // Parse the input file as XDR.
-    val lexer  = new XDRLexer(input)
+    val lexer  = new MercLexer(input)
     val tokens = new CommonTokenStream(lexer)
-    val parser = new XDRParser(tokens)
+    val parser = new MercParser(tokens)
     val tree   = parser.specification()
 
     // Walk the tree created during the parse and analyze it for semantic errors.

@@ -10,7 +10,7 @@ class BodyGenerator(
   nameOfFile     : String,
   symbolTable    : BasicSymbolTable,
   out            : java.io.PrintStream,
-  reporter       : Reporter) extends XDRBaseVisitor[Void] {
+  reporter       : Reporter) extends MercBaseVisitor[Void] {
 
   // The number of indentations where output lines start.
   private var indentationLevel = 0
@@ -64,7 +64,7 @@ class BodyGenerator(
     newLines
   }
 
-  override def visitSpecification(ctx: XDRParser.SpecificationContext): Void = {
+  override def visitSpecification(ctx: MercParser.SpecificationContext): Void = {
     val lines = processTemplate()
     val replacementString = nameOfFile
     for (line <- lines) {
@@ -3897,7 +3897,7 @@ class BodyGenerator(
   }
 
   //Encode sending.
-  def doEncode(ctx: XDRParser.Struct_bodyContext, id: String, arrowFlag: Int): Void = {
+  def doEncode(ctx: MercParser.Struct_bodyContext, id: String, arrowFlag: Int): Void = {
     val encodeString = "_Encode"
     doIndentation()
     out.println("function " + id + encodeString)
@@ -4297,7 +4297,7 @@ class BodyGenerator(
   }
 
   //Decode sending.
-  def doDecode(ctx: XDRParser.Struct_bodyContext, id: String, arrowFlag: Int): Void = {
+  def doDecode(ctx: MercParser.Struct_bodyContext, id: String, arrowFlag: Int): Void = {
     val decodeString = "_Decode"
     doIndentation()
     out.println("procedure " + id + decodeString)
@@ -6040,7 +6040,7 @@ class BodyGenerator(
     ll
   }
 
-  override def visitType_def(ctx: XDRParser.Type_defContext): Void = {
+  override def visitType_def(ctx: MercParser.Type_defContext): Void = {
     val typeOfTypeDef = ctx.getChild(0)
     typeOfTypeDef.getText match {
       case "message" =>
