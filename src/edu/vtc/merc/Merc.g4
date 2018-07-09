@@ -186,6 +186,7 @@ LBRACE   : '{';
 LBRACKET : '[';
 LPARENS  : '(';
 EQUALS   : '=';
+NEQUALS  : '/=';
 RANGLE   : '>';
 RBRACE   : '}';
 RBRACKET : ']';
@@ -209,7 +210,8 @@ expression
     |   IDENTIFIER GOE IDENTIFIER
     |   IDENTIFIER RANGLE IDENTIFIER
     |   IDENTIFIER LANGLE IDENTIFIER
-    |   IDENTIFIER EQUALS IDENTIFIER;
+    |   IDENTIFIER EQUALS IDENTIFIER
+    |   IDENTIFIER NEQUALS IDENTIFIER;
 
 WHITESPACE
     :   [ \t\f\r\n]+  -> skip;
@@ -221,7 +223,7 @@ COMMENT2
     :   '//' .*? [\r\n] -> skip;
 
 CONSTANT
-    :   ('-')? (DECIMAL | BASED) ( ('.') DIGIT+ )? ( ('E' | 'e') DIGIT+ )?;
+    :   ('-' | '+')? (DECIMAL | BASED) ( ('.') DIGIT+ )? ( ('E' | 'e') DIGIT+ )?;
 
 fragment DECIMAL
     :   DIGIT ('_'? DIGIT)*;
