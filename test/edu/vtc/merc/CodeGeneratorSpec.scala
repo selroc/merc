@@ -38,7 +38,10 @@ class CodeGeneratorSpec extends UnitSpec {
 
   "The sematics of the test files" should "have the indicated errors" in {
     val testCases = Array(
-      TestCase("m0001.mxdr", "expected-m0001.ads", "expected-m0001.adb"))
+      TestCase("m0001.mxdr", "expected-m0001.ads", "expected-m0001.adb"),
+      TestCase("m0002.mxdr", "expected-m0002.ads", "expected-m0002.adb"),
+      TestCase("m0003.mxdr", "expected-m0003.ads", "expected-m0003.adb"),
+      TestCase("m0004.mxdr", "expected-m0004.ads", "expected-m0004.adb"))
 
     for (testCase <- testCases) {
       val TestCase(sourceName, expectedSpecification, expectedBody) = testCase
