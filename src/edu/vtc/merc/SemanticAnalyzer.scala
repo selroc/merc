@@ -90,7 +90,7 @@ class SemanticAnalyzer(
     val parameters: List[TypeRep.Rep]
 
     for (i <- 0 until ctx.struct_body().declaration().size()) {
-      parameters.::(ctx.struct_body().declaration(i))
+      (ctx.struct_body().declaration(i)) :: parameters
     }
 
     symbolTable.addObjectName(MSName, MercParser.Message_struct_type_specContext)

@@ -25,9 +25,9 @@ class BodyGenerator(
   private def insertLine(bulk: List[String], str: String, indicator: String): List[String] = {
     var newBulk = List[String]()
     for (line <- bulk) {
-      newBulk = newBulk.::(line)
+      newBulk = line :: newBulk
       if (line.contains(indicator)) {
-        newBulk = newBulk.::("\n" + str)
+        newBulk = ("\n" + str) :: newBulk
       }
     }
     newBulk.reverse

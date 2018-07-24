@@ -1245,48 +1245,48 @@ class STPopulation(
       ctx.declaration(x).getChild(0).getText match {
         case "opaque" =>
           val t = TypeRep.OpaqueRep
-          p2.::((name, t, c))
+          ((name, t, c)) :: p2
         case "string" =>
           val t = TypeRep.StringRep
-          p2.::((name, t, c))
+          ((name, t, c)) :: p2
         case "void" =>
           val name = "void"
           val t = TypeRep.VoidRep
           (name, t, "null")
         case name =>
           val t = TypeRep.IDRep
-          p2.::((name, t, c))
+          ((name, t, c)) :: p2
         case _ => ctx.declaration(x).type_specifier().getText match {
           case "int" =>
             val t = TypeRep.IntRep
-            p2.::((name, t, c))
+            ((name, t, c)) :: p2
           case "unsignedint" =>
             val t = TypeRep.UIntRep
-            p2.::((name, t, c))
+            ((name, t, c)) :: p2
           case "hyper" =>
             val t = TypeRep.HyperRep
-            p2.::((name, t, c))
+            ((name, t, c)) :: p2
           case "unsignedhyper" =>
             val t = TypeRep.UHyperRep
-            p2.::((name, t, c))
+            ((name, t, c)) :: p2
           case "float" =>
             val t = TypeRep.FloatRep
-            p2.::((name, t, c))
+            ((name, t, c)) :: p2
           case "double" =>
             val t = TypeRep.DoubleRep
-            p2.::((name, t, c))
+            ((name, t, c)) :: p2
           case "quadruple" =>
             val t = TypeRep.QuadRep
-            p2.::((name, t, c))
+            ((name, t, c)) :: p2
           case "bool" =>
             val t = TypeRep.BoolRep
-            p2.::((name, t, c))
+            ((name, t, c)) :: p2
           case "string" =>
             val t = TypeRep.StringRep
-            p2.::((name, t, c))
+            ((name, t, c)) :: p2
           case name =>
             val t = TypeRep.IDRep
-            p2.::((name, t, c))
+            ((name, t, c)) :: p2
           case _ => ctx.declaration(x).type_specifier().getChild(0).getText match {
             case "enum" =>
               val t = TypeRep.EnumRep

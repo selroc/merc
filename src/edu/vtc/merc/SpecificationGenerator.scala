@@ -24,9 +24,9 @@ class SpecificationGenerator(
   private def insertLine(bulk: List[String], str: String, indicator: String): List[String] = {
     var newBulk = List[String]()
     for (line <- bulk) {
-      newBulk = newBulk.::(line)
+      newBulk = line :: newBulk
       if (line.contains(indicator)) {
-        newBulk = newBulk.::("\n" + str)
+        newBulk = ("\n" + str) :: newBulk
       }
     }
     newBulk.reverse
@@ -868,29 +868,29 @@ class SpecificationGenerator(
         if (ctx.children.contains(ctx.condition())) {
           for (i <- 0 to ctx.condition().expression().size() - 1) {
             if (ctx.condition().expression(i).children.contains(ctx.condition().expression(i).GOE())) {
-              m_i = m_i.::(ctx.condition().expression(i).IDENTIFIER(0).getText + " " +
+              m_i = (ctx.condition().expression(i).IDENTIFIER(0).getText + " " +
                 ctx.condition().expression(i).GOE().getText + " " +
-                ctx.condition().expression(i).IDENTIFIER(1).getText)
+                ctx.condition().expression(i).IDENTIFIER(1).getText) :: m_i
             }
             else if (ctx.condition().expression(i).children.contains(ctx.condition().expression(i).LOE())) {
-              m_i = m_i.::(ctx.condition().expression(i).IDENTIFIER(0).getText + " " +
+              m_i = (ctx.condition().expression(i).IDENTIFIER(0).getText + " " +
                 ctx.condition().expression(i).LOE().getText + " " +
-                ctx.condition().expression(i).IDENTIFIER(1).getText)
+                ctx.condition().expression(i).IDENTIFIER(1).getText) :: m_i
             }
             else if (ctx.condition().expression(i).children.contains(ctx.condition().expression(i).RANGLE())) {
-              m_i = m_i.::(ctx.condition().expression(i).IDENTIFIER(0).getText + " " +
+              m_i = (ctx.condition().expression(i).IDENTIFIER(0).getText + " " +
                 ctx.condition().expression(i).RANGLE().getText + " " +
-                ctx.condition().expression(i).IDENTIFIER(1).getText)
+                ctx.condition().expression(i).IDENTIFIER(1).getText) :: m_i
             }
             else if (ctx.condition().expression(i).children.contains(ctx.condition().expression(i).LANGLE())) {
-              m_i = m_i.::(ctx.condition().expression(i).IDENTIFIER(0).getText + " " +
+              m_i = (ctx.condition().expression(i).IDENTIFIER(0).getText + " " +
                 ctx.condition().expression(i).LANGLE().getText + " " +
-                ctx.condition().expression(i).IDENTIFIER(1).getText)
+                ctx.condition().expression(i).IDENTIFIER(1).getText) :: m_i
             }
             else if (ctx.condition().expression(i).children.contains(ctx.condition().expression(i).EQUALS())) {
-              m_i = m_i.::(ctx.condition().expression(i).IDENTIFIER(0).getText + " " +
+              m_i = (ctx.condition().expression(i).IDENTIFIER(0).getText + " " +
                 ctx.condition().expression(i).EQUALS().getText + " " +
-                ctx.condition().expression(i).IDENTIFIER(1).getText)
+                ctx.condition().expression(i).IDENTIFIER(1).getText) :: m_i
             }
           }
         }
