@@ -12,21 +12,17 @@ object Main {
 
   /**
     * Analyze the command line and extract the switches as well as the name of the source
-    * file(s) to be compiled. Each switch is has a '-' as a prefix and is represented as a
-    * single letter. If the switch has an argument, the text of that argument immediately
-    * follows the switch itself (no space) and extends to the next non-quoted space on the
-    * command line.
+    * file(s) to be compiled. Each switch has a '-' as a prefix and is represented as a single
+    * letter. If the switch has an argument, the text of that argument immediately follows the
+    * switch itself (no space) and extends to the next non-quoted space on the command line.
     *
     * @param args The command line as passed to the main method.
     * @return None if there is an error in the command line; otherwise return a set of switches
     *         together with the source file name(s).
     */
-  def analyzeCommandLine(args: Array[String]): Option[(Map[Char, String], String)] = {
+  private[merc] def analyzeCommandLine(args: Array[String]): Option[(Map[Char, String], String)] = {
     if (args.length < 1) {
       None
-    }
-    else if (args.length == 1) {
-      Some(Map(), args(0))
     }
     else {
       val (switchArgs, nonSwitchArgs) = args partition { _.charAt(0) == '-' }
@@ -57,7 +53,9 @@ object Main {
     // Analyze the command line.
     val commandOption = analyzeCommandLine(args)
     if (commandOption.isEmpty) {
-      println("Usage: java -jar Merc.jar [-k] [-tTemplateFolder] mxdr-source-file")
+      println("Usage: java -jar Merc.jar [-k] [-tTemplateFolder] mxdr-source-file\n" +
+              "   -k : Only check syntax and semantics of MXDR file\n" +
+              "   -t : Specifies the folder where package templates are located")
       System.exit(1)
     }
     val Some((switchMap, sourceName)) = commandOption

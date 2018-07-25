@@ -12,12 +12,18 @@
     <envs />
     <setting name="testKind" value="All in package" />
     <setting name="package" value="edu.vtc.merc" />
+    <buffered bufClass="edu.vtc.merc.CodeGeneratorSpec" />
+    <buffered bufClass="edu.vtc.merc.CodeGeneratorSpec" />
+    <buffered bufClass="edu.vtc.merc.MercSpec" />
+    <buffered bufClass="edu.vtc.merc.MercSpec" />
+    <buffered bufClass="edu.vtc.merc.SemanticSpec" />
+    <buffered bufClass="edu.vtc.merc.SemanticSpec" />
+    <buffered bufClass="edu.vtc.merc.SyntaxSpec" />
+    <buffered bufClass="edu.vtc.merc.SyntaxSpec" />
+    <buffered bufClass="edu.vtc.merc.TrivialSpec" />
     <buffered bufClass="edu.vtc.merc.TrivialSpec" />
     <buffered bufClass="edu.vtc.merc.UnitSpec" />
-    <buffered bufClass="edu.vtc.merc.MercSpec" />
-    <buffered bufClass="edu.vtc.merc.SyntaxSpec" />
-    <buffered bufClass="edu.vtc.merc.SemanticSpec" />
-    <buffered bufClass="edu.vtc.merc.CodeGeneratorSpec" />
+    <buffered bufClass="edu.vtc.merc.UnitSpec" />
     <method />
   </configuration>
 </component>
