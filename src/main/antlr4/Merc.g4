@@ -1,42 +1,5 @@
 grammar Merc;
 
-@parser::header {
-    package edu.vtc.merc;
-}
-
-@lexer::header {
-    package edu.vtc.merc;
-}
-
-@members {
-
-// The following material was from an earlier ANTLR3 grammar. It may not be applicable with
-// ANTLR4. Aborting after the first syntax error is not acceptable in a production parser
-// anyway. However, I'm keeping this material here for now in case it proves to be a useful
-// reference.
-
-//    // The following two magic methods, together with the @rulecatch section below cause the
-//    // parser to exit immediately with an exception when an error is encountered.
-//    //
-//    protected Object recoverFromMismatchedToken(IntStream input, int ttype, BitSet follow)
-//        throws RecognitionException
-//    {
-//        throw new MismatchedTokenException(ttype, input);
-//    }
-//
-//    public Object recoverFromMismatchedSet(IntStream input, RecognitionException e, BitSet follow)
-//        throws RecognitionException
-//    {
-//        throw e;
-//    }
-}
-
-//@parser::rulecatch {
-//    catch (RecognitionException e) {
-//        throw e;
-//    }
-//}
-
 /* ======= */
 /* Grammar */
 /* ======= */

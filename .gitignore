@@ -3,18 +3,8 @@
 .idea/workspace.xml
 build
 
-# Downloaded libraries.
-lib/*.jar
-
-# ANTLR generated files.
-Merc.tokens
-MercBaseListener.java
-MercBaseVisitor.java
-MercLexer.java
-MercLexer.tokens
-MercListener.java
-MercParser.java
-MercVisitor.java
+# SBT generated folders.
+target
 
 # LaTeX artifacts.
 main.aux
