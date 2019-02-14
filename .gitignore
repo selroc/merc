@@ -1,6 +1,6 @@
 
 # IntelliJ files that should not be versioned.
-.idea/workspace.xml
+.idea
 build
 
 # SBT generated folders.
