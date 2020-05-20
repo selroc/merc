@@ -1,14 +1,38 @@
 package edu.vtc.merc
 
-import edu.vtc.merc
 import edu.vtc.merc.TypeRep.{ComponentRep, UnionRep}
 
-import scala.util.control.Breaks._
-
 class STPopulation(
-                    nameOfFile : String,
-                    symbolTable: BasicSymbolTable,
-                    reporter   : Reporter) extends MercBaseVisitor[(String, TypeRep.Rep, String)] {
+  nameOfFile : String,
+  symbolTable: BasicSymbolTable,
+  reporter   : Reporter) extends MercBaseVisitor[(String, TypeRep.Rep, String)] {
+
+  private val reservedWords = List(
+    "abort",     "abs",          "abstract", "accept",  "access",    "aliased",
+    "all",       "and",          "array",    "at",      "begin",     "body",
+    "case",      "constant",     "declare",  "delay",   "delta",     "digits",
+    "do",        "else",         "elsif",    "end",     "entry",     "exception",
+    "exit",      "for",          "function", "generic", "goto",      "if",
+    "in",        "interface",    "is",       "limited", "loop",      "mod",
+    "new",       "not",          "null",     "of",      "or",        "others",
+    "out",       "overriding",   "package",  "pragma",  "private",   "procedure",
+    "protected", "raise",        "range",    "record",  "rem",       "renames",
+    "requeue",   "return",       "reverse",  "select",  "separate",  "some",
+    "subtype",   "synchronized", "tagged",   "task",    "terminate", "then",
+    "type",      "until",        "use",      "when",    "while",     "with",
+    "xor")
+
+  /**
+   * Checks if the given string is a reserved word in SPARK/Ada. Since Ada is case insensitive,
+   * it is necessary to do this check without regard to case.
+   *
+   * @param word The word to check.
+   * @return True if and only if the word is reserved.
+   */
+  private def isReservedWord(word: String): Boolean = {
+    reservedWords.contains(word.toLowerCase)
+  }
+
 
   def visitRC(ctx: MercParser.Range_constraintContext): String = {
     val lowerBoundNode = ctx.CONSTANT(0)
@@ -138,6 +162,7 @@ class STPopulation(
     }
   }
 
+
   def structP(ctx: MercParser.Struct_bodyContext): ComponentRep = {
     var p2 = List[(String, TypeRep.Rep, String)]()
     val i = ctx.declaration().size()
@@ -149,22 +174,7 @@ class STPopulation(
       else {
         val name = ctx.declaration(x).IDENTIFIER()
         val n = ctx.declaration(x).IDENTIFIER().getText
-        if (n.toLowerCase == "abort" || n.toLowerCase == "abs" || n.toLowerCase == "abstract" || n.toLowerCase == "accept" ||
-          n.toLowerCase == "access" || n.toLowerCase == "aliased" || n.toLowerCase == "all" || n.toLowerCase == "and" || n.toLowerCase == "array" ||
-          n.toLowerCase == "at" || n.toLowerCase == "begin" || n.toLowerCase == "body" || n.toLowerCase == "case" || n.toLowerCase == "constant" ||
-          n.toLowerCase == "declare" || n.toLowerCase == "delay" || n.toLowerCase == "delta" || n.toLowerCase == "digits" ||
-          n.toLowerCase == "do" || n.toLowerCase == "else" || n.toLowerCase == "elsif" || n.toLowerCase == "end" || n.toLowerCase == "entry" ||
-          n.toLowerCase == "exception" || n.toLowerCase == "exit" || n.toLowerCase == "for" || n.toLowerCase == "function" || n.toLowerCase == "generic" ||
-          n.toLowerCase == "goto" || n.toLowerCase == "if" || n.toLowerCase == "in" || n.toLowerCase == "interface" ||
-          n.toLowerCase == "is" || n.toLowerCase == "limited" || n.toLowerCase == "loop" || n.toLowerCase == "mod" || n.toLowerCase == "new" ||
-          n.toLowerCase == "not" || n.toLowerCase == "null" || n.toLowerCase == "of" || n.toLowerCase == "or" || n.toLowerCase == "others" ||
-          n.toLowerCase == "out" || n.toLowerCase == "overriding" || n.toLowerCase == "package" || n.toLowerCase == "pragma" ||
-          n.toLowerCase == "private" || n.toLowerCase == "procedure" || n.toLowerCase == "protected" || n.toLowerCase == "raise" || n.toLowerCase == "range" ||
-          n.toLowerCase == "record" || n.toLowerCase == "rem" || n.toLowerCase == "renames" || n.toLowerCase == "requeue" || n.toLowerCase == "return" ||
-          n.toLowerCase == "reverse" || n.toLowerCase == "select" || n.toLowerCase == "separate" || n.toLowerCase == "some" ||
-          n.toLowerCase == "subtype" || n.toLowerCase == "synchronized" || n.toLowerCase == "tagged" || n.toLowerCase == "task" || n.toLowerCase == "terminate" ||
-          n.toLowerCase == "then" || n.toLowerCase == "type" || n.toLowerCase == "until" || n.toLowerCase == "use" || n.toLowerCase == "when" ||
-          n.toLowerCase == "while" || n.toLowerCase == "with" || n.toLowerCase == "xor") {
+        if (isReservedWord(n)) {
           reporter.reportError(
             name.getSymbol.getLine,
             name.getSymbol.getCharPositionInLine + 1,
@@ -402,6 +412,7 @@ class STPopulation(
     ComponentRep(p2)
   }
 
+
   def enumP(ctx: MercParser.Enum_bodyContext): ComponentRep = {
     var p2 = List[(String, TypeRep.Rep, String)]()
     val i = ctx.IDENTIFIER().size
@@ -409,22 +420,7 @@ class STPopulation(
       for (x <- 0 until i) {
         val name = ctx.IDENTIFIER(x)
         val n = ctx.IDENTIFIER(x).getText
-        if (n.toLowerCase == "abort" || n.toLowerCase == "abs" || n.toLowerCase == "abstract" || n.toLowerCase == "accept" ||
-          n.toLowerCase == "access" || n.toLowerCase == "aliased" || n.toLowerCase == "all" || n.toLowerCase == "and" || n.toLowerCase == "array" ||
-          n.toLowerCase == "at" || n.toLowerCase == "begin" || n.toLowerCase == "body" || n.toLowerCase == "case" || n.toLowerCase == "constant" ||
-          n.toLowerCase == "declare" || n.toLowerCase == "delay" || n.toLowerCase == "delta" || n.toLowerCase == "digits" ||
-          n.toLowerCase == "do" || n.toLowerCase == "else" || n.toLowerCase == "elsif" || n.toLowerCase == "end" || n.toLowerCase == "entry" ||
-          n.toLowerCase == "exception" || n.toLowerCase == "exit" || n.toLowerCase == "for" || n.toLowerCase == "function" || n.toLowerCase == "generic" ||
-          n.toLowerCase == "goto" || n.toLowerCase == "if" || n.toLowerCase == "in" || n.toLowerCase == "interface" ||
-          n.toLowerCase == "is" || n.toLowerCase == "limited" || n.toLowerCase == "loop" || n.toLowerCase == "mod" || n.toLowerCase == "new" ||
-          n.toLowerCase == "not" || n.toLowerCase == "null" || n.toLowerCase == "of" || n.toLowerCase == "or" || n.toLowerCase == "others" ||
-          n.toLowerCase == "out" || n.toLowerCase == "overriding" || n.toLowerCase == "package" || n.toLowerCase == "pragma" ||
-          n.toLowerCase == "private" || n.toLowerCase == "procedure" || n.toLowerCase == "protected" || n.toLowerCase == "raise" || n.toLowerCase == "range" ||
-          n.toLowerCase == "record" || n.toLowerCase == "rem" || n.toLowerCase == "renames" || n.toLowerCase == "requeue" || n.toLowerCase == "return" ||
-          n.toLowerCase == "reverse" || n.toLowerCase == "select" || n.toLowerCase == "separate" || n.toLowerCase == "some" ||
-          n.toLowerCase == "subtype" || n.toLowerCase == "synchronized" || n.toLowerCase == "tagged" || n.toLowerCase == "task" || n.toLowerCase == "terminate" ||
-          n.toLowerCase == "then" || n.toLowerCase == "type" || n.toLowerCase == "until" || n.toLowerCase == "use" || n.toLowerCase == "when" ||
-          n.toLowerCase == "while" || n.toLowerCase == "with" || n.toLowerCase == "xor") {
+        if (isReservedWord(n)) {
           reporter.reportError(
             name.getSymbol.getLine,
             name.getSymbol.getCharPositionInLine + 1,
@@ -439,22 +435,7 @@ class STPopulation(
       for (x <- 0 until i) {
         val name = ctx.IDENTIFIER(x)
         val n = ctx.IDENTIFIER(x).getText
-        if (n.toLowerCase == "abort" || n.toLowerCase == "abs" || n.toLowerCase == "abstract" || n.toLowerCase == "accept" ||
-          n.toLowerCase == "access" || n.toLowerCase == "aliased" || n.toLowerCase == "all" || n.toLowerCase == "and" || n.toLowerCase == "array" ||
-          n.toLowerCase == "at" || n.toLowerCase == "begin" || n.toLowerCase == "body" || n.toLowerCase == "case" || n.toLowerCase == "constant" ||
-          n.toLowerCase == "declare" || n.toLowerCase == "delay" || n.toLowerCase == "delta" || n.toLowerCase == "digits" ||
-          n.toLowerCase == "do" || n.toLowerCase == "else" || n.toLowerCase == "elsif" || n.toLowerCase == "end" || n.toLowerCase == "entry" ||
-          n.toLowerCase == "exception" || n.toLowerCase == "exit" || n.toLowerCase == "for" || n.toLowerCase == "function" || n.toLowerCase == "generic" ||
-          n.toLowerCase == "goto" || n.toLowerCase == "if" || n.toLowerCase == "in" || n.toLowerCase == "interface" ||
-          n.toLowerCase == "is" || n.toLowerCase == "limited" || n.toLowerCase == "loop" || n.toLowerCase == "mod" || n.toLowerCase == "new" ||
-          n.toLowerCase == "not" || n.toLowerCase == "null" || n.toLowerCase == "of" || n.toLowerCase == "or" || n.toLowerCase == "others" ||
-          n.toLowerCase == "out" || n.toLowerCase == "overriding" || n.toLowerCase == "package" || n.toLowerCase == "pragma" ||
-          n.toLowerCase == "private" || n.toLowerCase == "procedure" || n.toLowerCase == "protected" || n.toLowerCase == "raise" || n.toLowerCase == "range" ||
-          n.toLowerCase == "record" || n.toLowerCase == "rem" || n.toLowerCase == "renames" || n.toLowerCase == "requeue" || n.toLowerCase == "return" ||
-          n.toLowerCase == "reverse" || n.toLowerCase == "select" || n.toLowerCase == "separate" || n.toLowerCase == "some" ||
-          n.toLowerCase == "subtype" || n.toLowerCase == "synchronized" || n.toLowerCase == "tagged" || n.toLowerCase == "task" || n.toLowerCase == "terminate" ||
-          n.toLowerCase == "then" || n.toLowerCase == "type" || n.toLowerCase == "until" || n.toLowerCase == "use" || n.toLowerCase == "when" ||
-          n.toLowerCase == "while" || n.toLowerCase == "with" || n.toLowerCase == "xor") {
+        if (isReservedWord(n)) {
           reporter.reportError(
             name.getSymbol.getLine,
             name.getSymbol.getCharPositionInLine + 1,
@@ -468,6 +449,7 @@ class STPopulation(
     ComponentRep(p2)
   }
 
+
   override def aggregateResult(aggregate: (String, TypeRep.Rep, String), nextResult: (String, TypeRep.Rep, String)): (String, TypeRep.Rep, String) = {
     val (n, t, v) = aggregate
     if (t.isInstanceOf[ComponentRep]) {
@@ -479,15 +461,18 @@ class STPopulation(
     }
   }
 
+
   override def defaultResult(): (String, TypeRep.Rep, String) = {
     val d1 = "null"
     val d2 = "null"
     (d1, ComponentRep(List[(String, TypeRep.Rep, String)]()), d2)
   }
 
+
   override def visitSpecification(ctx: MercParser.SpecificationContext): (String, TypeRep.Rep, String) = {
     visitChildren(ctx)
   }
+
 
   override def visitDefinition(ctx: MercParser.DefinitionContext): (String, TypeRep.Rep, String) = {
     if (ctx.children.contains(ctx.type_def())) {
@@ -582,31 +567,18 @@ class STPopulation(
     ("null", TypeRep.NoTypeRep, "null")
   }
 
+
   override def visitDeclaration(ctx: MercParser.DeclarationContext): (String, TypeRep.Rep, String) = {
     visitChildren(ctx)
   }
+
 
   override def visitType_def(ctx: MercParser.Type_defContext): (String, TypeRep.Rep, String) = {
     ctx.getChild(0).getText match {
       case "typedef" =>
         val name = ctx.declaration().IDENTIFIER()
         val n = ctx.declaration().IDENTIFIER().getText
-        if (n.toLowerCase == "abort" || n.toLowerCase == "abs" || n.toLowerCase == "abstract" || n.toLowerCase == "accept" ||
-          n.toLowerCase == "access" || n.toLowerCase == "aliased" || n.toLowerCase == "all" || n.toLowerCase == "and" || n.toLowerCase == "array" ||
-          n.toLowerCase == "at" || n.toLowerCase == "begin" || n.toLowerCase == "body" || n.toLowerCase == "case" || n.toLowerCase == "constant" ||
-          n.toLowerCase == "declare" || n.toLowerCase == "delay" || n.toLowerCase == "delta" || n.toLowerCase == "digits" ||
-          n.toLowerCase == "do" || n.toLowerCase == "else" || n.toLowerCase == "elsif" || n.toLowerCase == "end" || n.toLowerCase == "entry" ||
-          n.toLowerCase == "exception" || n.toLowerCase == "exit" || n.toLowerCase == "for" || n.toLowerCase == "function" || n.toLowerCase == "generic" ||
-          n.toLowerCase == "goto" || n.toLowerCase == "if" || n.toLowerCase == "in" || n.toLowerCase == "interface" ||
-          n.toLowerCase == "is" || n.toLowerCase == "limited" || n.toLowerCase == "loop" || n.toLowerCase == "mod" || n.toLowerCase == "new" ||
-          n.toLowerCase == "not" || n.toLowerCase == "null" || n.toLowerCase == "of" || n.toLowerCase == "or" || n.toLowerCase == "others" ||
-          n.toLowerCase == "out" || n.toLowerCase == "overriding" || n.toLowerCase == "package" || n.toLowerCase == "pragma" ||
-          n.toLowerCase == "private" || n.toLowerCase == "procedure" || n.toLowerCase == "protected" || n.toLowerCase == "raise" || n.toLowerCase == "range" ||
-          n.toLowerCase == "record" || n.toLowerCase == "rem" || n.toLowerCase == "renames" || n.toLowerCase == "requeue" || n.toLowerCase == "return" ||
-          n.toLowerCase == "reverse" || n.toLowerCase == "select" || n.toLowerCase == "separate" || n.toLowerCase == "some" ||
-          n.toLowerCase == "subtype" || n.toLowerCase == "synchronized" || n.toLowerCase == "tagged" || n.toLowerCase == "task" || n.toLowerCase == "terminate" ||
-          n.toLowerCase == "then" || n.toLowerCase == "type" || n.toLowerCase == "until" || n.toLowerCase == "use" || n.toLowerCase == "when" ||
-          n.toLowerCase == "while" || n.toLowerCase == "with" || n.toLowerCase == "xor") {
+        if (isReservedWord(n)) {
           reporter.reportError(
             name.getSymbol.getLine,
             name.getSymbol.getCharPositionInLine + 1,
@@ -903,26 +875,10 @@ class STPopulation(
           }
         }
         ("default", TypeRep.NoTypeRep, "null")
-      case "enum"
-      =>
+      case "enum" =>
         val name = ctx.IDENTIFIER()
         val n = ctx.IDENTIFIER().getText
-        if (n.toLowerCase == "abort" || n.toLowerCase == "abs" || n.toLowerCase == "abstract" || n.toLowerCase == "accept" ||
-          n.toLowerCase == "access" || n.toLowerCase == "aliased" || n.toLowerCase == "all" || n.toLowerCase == "and" || n.toLowerCase == "array" ||
-          n.toLowerCase == "at" || n.toLowerCase == "begin" || n.toLowerCase == "body" || n.toLowerCase == "case" || n.toLowerCase == "constant" ||
-          n.toLowerCase == "declare" || n.toLowerCase == "delay" || n.toLowerCase == "delta" || n.toLowerCase == "digits" ||
-          n.toLowerCase == "do" || n.toLowerCase == "else" || n.toLowerCase == "elsif" || n.toLowerCase == "end" || n.toLowerCase == "entry" ||
-          n.toLowerCase == "exception" || n.toLowerCase == "exit" || n.toLowerCase == "for" || n.toLowerCase == "function" || n.toLowerCase == "generic" ||
-          n.toLowerCase == "goto" || n.toLowerCase == "if" || n.toLowerCase == "in" || n.toLowerCase == "interface" ||
-          n.toLowerCase == "is" || n.toLowerCase == "limited" || n.toLowerCase == "loop" || n.toLowerCase == "mod" || n.toLowerCase == "new" ||
-          n.toLowerCase == "not" || n.toLowerCase == "null" || n.toLowerCase == "of" || n.toLowerCase == "or" || n.toLowerCase == "others" ||
-          n.toLowerCase == "out" || n.toLowerCase == "overriding" || n.toLowerCase == "package" || n.toLowerCase == "pragma" ||
-          n.toLowerCase == "private" || n.toLowerCase == "procedure" || n.toLowerCase == "protected" || n.toLowerCase == "raise" || n.toLowerCase == "range" ||
-          n.toLowerCase == "record" || n.toLowerCase == "rem" || n.toLowerCase == "renames" || n.toLowerCase == "requeue" || n.toLowerCase == "return" ||
-          n.toLowerCase == "reverse" || n.toLowerCase == "select" || n.toLowerCase == "separate" || n.toLowerCase == "some" ||
-          n.toLowerCase == "subtype" || n.toLowerCase == "synchronized" || n.toLowerCase == "tagged" || n.toLowerCase == "task" || n.toLowerCase == "terminate" ||
-          n.toLowerCase == "then" || n.toLowerCase == "type" || n.toLowerCase == "until" || n.toLowerCase == "use" || n.toLowerCase == "when" ||
-          n.toLowerCase == "while" || n.toLowerCase == "with" || n.toLowerCase == "xor") {
+        if (isReservedWord(n)) {
           reporter.reportError(
             name.getSymbol.getLine,
             name.getSymbol.getCharPositionInLine + 1,
@@ -934,26 +890,10 @@ class STPopulation(
         symbolTable.addTypeName(n, t.apply(n, p), "null")
         symbolTable.addStructuredName(n, t.apply(n, p), "null")
         (n, t.apply(n, p), "null")
-      case "struct"
-      =>
+      case "struct" =>
         val name = ctx.IDENTIFIER()
         val n = ctx.IDENTIFIER().getText
-        if (n.toLowerCase == "abort" || n.toLowerCase == "abs" || n.toLowerCase == "abstract" || n.toLowerCase == "accept" ||
-          n.toLowerCase == "access" || n.toLowerCase == "aliased" || n.toLowerCase == "all" || n.toLowerCase == "and" || n.toLowerCase == "array" ||
-          n.toLowerCase == "at" || n.toLowerCase == "begin" || n.toLowerCase == "body" || n.toLowerCase == "case" || n.toLowerCase == "constant" ||
-          n.toLowerCase == "declare" || n.toLowerCase == "delay" || n.toLowerCase == "delta" || n.toLowerCase == "digits" ||
-          n.toLowerCase == "do" || n.toLowerCase == "else" || n.toLowerCase == "elsif" || n.toLowerCase == "end" || n.toLowerCase == "entry" ||
-          n.toLowerCase == "exception" || n.toLowerCase == "exit" || n.toLowerCase == "for" || n.toLowerCase == "function" || n.toLowerCase == "generic" ||
-          n.toLowerCase == "goto" || n.toLowerCase == "if" || n.toLowerCase == "in" || n.toLowerCase == "interface" ||
-          n.toLowerCase == "is" || n.toLowerCase == "limited" || n.toLowerCase == "loop" || n.toLowerCase == "mod" || n.toLowerCase == "new" ||
-          n.toLowerCase == "not" || n.toLowerCase == "null" || n.toLowerCase == "of" || n.toLowerCase == "or" || n.toLowerCase == "others" ||
-          n.toLowerCase == "out" || n.toLowerCase == "overriding" || n.toLowerCase == "package" || n.toLowerCase == "pragma" ||
-          n.toLowerCase == "private" || n.toLowerCase == "procedure" || n.toLowerCase == "protected" || n.toLowerCase == "raise" || n.toLowerCase == "range" ||
-          n.toLowerCase == "record" || n.toLowerCase == "rem" || n.toLowerCase == "renames" || n.toLowerCase == "requeue" || n.toLowerCase == "return" ||
-          n.toLowerCase == "reverse" || n.toLowerCase == "select" || n.toLowerCase == "separate" || n.toLowerCase == "some" ||
-          n.toLowerCase == "subtype" || n.toLowerCase == "synchronized" || n.toLowerCase == "tagged" || n.toLowerCase == "task" || n.toLowerCase == "terminate" ||
-          n.toLowerCase == "then" || n.toLowerCase == "type" || n.toLowerCase == "until" || n.toLowerCase == "use" || n.toLowerCase == "when" ||
-          n.toLowerCase == "while" || n.toLowerCase == "with" || n.toLowerCase == "xor") {
+        if (isReservedWord(n)) {
           reporter.reportError(
             name.getSymbol.getLine,
             name.getSymbol.getCharPositionInLine + 1,
@@ -965,33 +905,16 @@ class STPopulation(
         symbolTable.addTypeName(n, t.apply(n, p), "null")
         symbolTable.addStructuredName(n, t.apply(n, p), "null")
         (n, t.apply(n, p), "null")
-      /*case "union"
-  =>
+      /*case "union" =>
     val name = ctx.IDENTIFIER().getText
     val t = TypeRep.UnionRep
     val p = visitChildren(ctx.declaration().type_specifier().union_type_spec().union_body()).asInstanceOf[ComponentRep]
     symbolTable.addObjectName(name, t.apply(name, p), "null")
     (name, t.apply(name, p), "null")*/
-      case "message"
-      =>
+      case "message" =>
         val name = ctx.IDENTIFIER()
         val n = ctx.IDENTIFIER().getText
-        if (n.toLowerCase == "abort" || n.toLowerCase == "abs" || n.toLowerCase == "abstract" || n.toLowerCase == "accept" ||
-          n.toLowerCase == "access" || n.toLowerCase == "aliased" || n.toLowerCase == "all" || n.toLowerCase == "and" || n.toLowerCase == "array" ||
-          n.toLowerCase == "at" || n.toLowerCase == "begin" || n.toLowerCase == "body" || n.toLowerCase == "case" || n.toLowerCase == "constant" ||
-          n.toLowerCase == "declare" || n.toLowerCase == "delay" || n.toLowerCase == "delta" || n.toLowerCase == "digits" ||
-          n.toLowerCase == "do" || n.toLowerCase == "else" || n.toLowerCase == "elsif" || n.toLowerCase == "end" || n.toLowerCase == "entry" ||
-          n.toLowerCase == "exception" || n.toLowerCase == "exit" || n.toLowerCase == "for" || n.toLowerCase == "function" || n.toLowerCase == "generic" ||
-          n.toLowerCase == "goto" || n.toLowerCase == "if" || n.toLowerCase == "in" || n.toLowerCase == "interface" ||
-          n.toLowerCase == "is" || n.toLowerCase == "limited" || n.toLowerCase == "loop" || n.toLowerCase == "mod" || n.toLowerCase == "new" ||
-          n.toLowerCase == "not" || n.toLowerCase == "null" || n.toLowerCase == "of" || n.toLowerCase == "or" || n.toLowerCase == "others" ||
-          n.toLowerCase == "out" || n.toLowerCase == "overriding" || n.toLowerCase == "package" || n.toLowerCase == "pragma" ||
-          n.toLowerCase == "private" || n.toLowerCase == "procedure" || n.toLowerCase == "protected" || n.toLowerCase == "raise" || n.toLowerCase == "range" ||
-          n.toLowerCase == "record" || n.toLowerCase == "rem" || n.toLowerCase == "renames" || n.toLowerCase == "requeue" || n.toLowerCase == "return" ||
-          n.toLowerCase == "reverse" || n.toLowerCase == "select" || n.toLowerCase == "separate" || n.toLowerCase == "some" ||
-          n.toLowerCase == "subtype" || n.toLowerCase == "synchronized" || n.toLowerCase == "tagged" || n.toLowerCase == "task" || n.toLowerCase == "terminate" ||
-          n.toLowerCase == "then" || n.toLowerCase == "type" || n.toLowerCase == "until" || n.toLowerCase == "use" || n.toLowerCase == "when" ||
-          n.toLowerCase == "while" || n.toLowerCase == "with" || n.toLowerCase == "xor") {
+        if (isReservedWord(n)) {
           reporter.reportError(
             name.getSymbol.getLine,
             name.getSymbol.getCharPositionInLine + 1,
@@ -1013,22 +936,7 @@ class STPopulation(
     else {
       ctx.declaration().VOID().getText
     }
-    if (n.toLowerCase == "abort" || n.toLowerCase == "abs" || n.toLowerCase == "abstract" || n.toLowerCase == "accept" ||
-      n.toLowerCase == "access" || n.toLowerCase == "aliased" || n.toLowerCase == "all" || n.toLowerCase == "and" || n.toLowerCase == "array" ||
-      n.toLowerCase == "at" || n.toLowerCase == "begin" || n.toLowerCase == "body" || n.toLowerCase == "case" || n.toLowerCase == "constant" ||
-      n.toLowerCase == "declare" || n.toLowerCase == "delay" || n.toLowerCase == "delta" || n.toLowerCase == "digits" ||
-      n.toLowerCase == "do" || n.toLowerCase == "else" || n.toLowerCase == "elsif" || n.toLowerCase == "end" || n.toLowerCase == "entry" ||
-      n.toLowerCase == "exception" || n.toLowerCase == "exit" || n.toLowerCase == "for" || n.toLowerCase == "function" || n.toLowerCase == "generic" ||
-      n.toLowerCase == "goto" || n.toLowerCase == "if" || n.toLowerCase == "in" || n.toLowerCase == "interface" ||
-      n.toLowerCase == "is" || n.toLowerCase == "limited" || n.toLowerCase == "loop" || n.toLowerCase == "mod" || n.toLowerCase == "new" ||
-      n.toLowerCase == "not" || n.toLowerCase == "null" || n.toLowerCase == "of" || n.toLowerCase == "or" || n.toLowerCase == "others" ||
-      n.toLowerCase == "out" || n.toLowerCase == "overriding" || n.toLowerCase == "package" || n.toLowerCase == "pragma" ||
-      n.toLowerCase == "private" || n.toLowerCase == "procedure" || n.toLowerCase == "protected" || n.toLowerCase == "raise" || n.toLowerCase == "range" ||
-      n.toLowerCase == "record" || n.toLowerCase == "rem" || n.toLowerCase == "renames" || n.toLowerCase == "requeue" || n.toLowerCase == "return" ||
-      n.toLowerCase == "reverse" || n.toLowerCase == "select" || n.toLowerCase == "separate" || n.toLowerCase == "some" ||
-      n.toLowerCase == "subtype" || n.toLowerCase == "synchronized" || n.toLowerCase == "tagged" || n.toLowerCase == "task" || n.toLowerCase == "terminate" ||
-      n.toLowerCase == "then" || n.toLowerCase == "type" || n.toLowerCase == "until" || n.toLowerCase == "use" || n.toLowerCase == "when" ||
-      n.toLowerCase == "while" || n.toLowerCase == "with" || n.toLowerCase == "xor") {
+    if (isReservedWord(n)) {
       val name = ctx.declaration().IDENTIFIER()
       reporter.reportError(
         name.getSymbol.getLine,
@@ -1201,25 +1109,11 @@ class STPopulation(
     }
   }
 
+
   override def visitConstant_def(ctx: MercParser.Constant_defContext): (String, TypeRep.Rep, String) = {
     val name = ctx.IDENTIFIER(0)
     val n = ctx.IDENTIFIER(0).getText
-    if (n.toLowerCase == "abort" || n.toLowerCase == "abs" || n.toLowerCase == "abstract" || n.toLowerCase == "accept" ||
-      n.toLowerCase == "access" || n.toLowerCase == "aliased" || n.toLowerCase == "all" || n.toLowerCase == "and" || n.toLowerCase == "array" ||
-      n.toLowerCase == "at" || n.toLowerCase == "begin" || n.toLowerCase == "body" || n.toLowerCase == "case" || n.toLowerCase == "constant" ||
-      n.toLowerCase == "declare" || n.toLowerCase == "delay" || n.toLowerCase == "delta" || n.toLowerCase == "digits" ||
-      n.toLowerCase == "do" || n.toLowerCase == "else" || n.toLowerCase == "elsif" || n.toLowerCase == "end" || n.toLowerCase == "entry" ||
-      n.toLowerCase == "exception" || n.toLowerCase == "exit" || n.toLowerCase == "for" || n.toLowerCase == "function" || n.toLowerCase == "generic" ||
-      n.toLowerCase == "goto" || n.toLowerCase == "if" || n.toLowerCase == "in" || n.toLowerCase == "interface" ||
-      n.toLowerCase == "is" || n.toLowerCase == "limited" || n.toLowerCase == "loop" || n.toLowerCase == "mod" || n.toLowerCase == "new" ||
-      n.toLowerCase == "not" || n.toLowerCase == "null" || n.toLowerCase == "of" || n.toLowerCase == "or" || n.toLowerCase == "others" ||
-      n.toLowerCase == "out" || n.toLowerCase == "overriding" || n.toLowerCase == "package" || n.toLowerCase == "pragma" ||
-      n.toLowerCase == "private" || n.toLowerCase == "procedure" || n.toLowerCase == "protected" || n.toLowerCase == "raise" || n.toLowerCase == "range" ||
-      n.toLowerCase == "record" || n.toLowerCase == "rem" || n.toLowerCase == "renames" || n.toLowerCase == "requeue" || n.toLowerCase == "return" ||
-      n.toLowerCase == "reverse" || n.toLowerCase == "select" || n.toLowerCase == "separate" || n.toLowerCase == "some" ||
-      n.toLowerCase == "subtype" || n.toLowerCase == "synchronized" || n.toLowerCase == "tagged" || n.toLowerCase == "task" || n.toLowerCase == "terminate" ||
-      n.toLowerCase == "then" || n.toLowerCase == "type" || n.toLowerCase == "until" || n.toLowerCase == "use" || n.toLowerCase == "when" ||
-      n.toLowerCase == "while" || n.toLowerCase == "with" || n.toLowerCase == "xor") {
+    if (isReservedWord(n)) {
       reporter.reportError(
         name.getSymbol.getLine,
         name.getSymbol.getCharPositionInLine + 1,
@@ -1230,6 +1124,7 @@ class STPopulation(
     symbolTable.addTypeName(n, t.apply(n, v), v)
     (n, t.apply(n, v), v)
   }
+
 
   /*def unionP(ctx: MercParser.Struct_bodyContext): List[(String, TypeRep.Rep, String)] = {
     var p2: List[(String, TypeRep.Rep, String)] = null

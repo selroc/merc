@@ -1,5 +1,8 @@
 package edu.vtc.merc
 
+/**
+ * An implementation of the Reporter trait that outputs messages to the console.
+ */
 class BasicConsoleReporter extends Reporter {
 
   var errorCount = 0

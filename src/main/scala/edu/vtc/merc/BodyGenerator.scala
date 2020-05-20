@@ -95,7 +95,7 @@ class BodyGenerator(
         }
         if (symbolTable.getST(i, y).contains("StructRep")) {
           var ll = List[String]()
-          ll = l.:+(y)
+          ll = l :+ y
           processStructDF(sp, ll, 0)
         }
         else if (symbolTable.getST(i, y).contains("ArrayRep")) {
@@ -276,7 +276,7 @@ class BodyGenerator(
         val sp = symbolTable.getStructuredTypeParent(i, y)
         if (symbolTable.getST(i, y).contains("StructRep")) {
           var ll = List[String]()
-          ll = l.:+(y)
+          ll = l :+ y
           processStructDF(sp, ll, 0)
         }
         else if (symbolTable.getST(i, y).contains("ArrayRep")) {
@@ -463,7 +463,7 @@ class BodyGenerator(
         }
         if (symbolTable.getST(i, y).contains("StructRep")) {
           var ll = List[String]()
-          ll = l.:+(y)
+          ll = l :+ y
           processStructD(i, sp, ll, posFlag, stringFlag, 0)
         }
         else if (symbolTable.getST(i, y).contains("ArrayRep")) {
@@ -1721,7 +1721,7 @@ class BodyGenerator(
         val sp = symbolTable.getStructuredTypeParent(i, y)
         if (symbolTable.getST(i, y).contains("StructRep")) {
           var ll = List[String]()
-          ll = l.:+(y)
+          ll = l :+ y
           processStructD(i, sp, ll, posFlag, stringFlag, 0)
         }
         else if (symbolTable.getST(i, y).contains("ArrayRep")) {
@@ -2964,7 +2964,7 @@ class BodyGenerator(
         }
         if (symbolTable.getST(i, y).contains("StructRep")) {
           var ll = List[String]()
-          ll = l.:+(y)
+          ll = l :+ y
           processStructE(i, sp, ll, 0)
         }
         else if (symbolTable.getST(i, y).contains("ArrayRep")) {
@@ -3398,7 +3398,7 @@ class BodyGenerator(
         val sp = symbolTable.getStructuredTypeParent(i, y)
         if (symbolTable.getST(i, y).contains("StructRep")) {
           var ll = List[String]()
-          ll = l.:+(y)
+          ll = l :+ y
           processStructV(sp, ll, 0)
         }
         else if (symbolTable.getST(i, y).contains("ArrayRep")) {
@@ -3655,7 +3655,7 @@ class BodyGenerator(
         val sp = symbolTable.getStructuredTypeParent(i, y)
         if (symbolTable.getST(i, y).contains("StructRep")) {
           var ll = List[String]()
-          ll = l.:+(y)
+          ll = l :+ y
           processStructV(sp, ll, 0)
         }
         else if (symbolTable.getST(i, y).contains("ArrayRep")) {
@@ -4056,13 +4056,13 @@ class BodyGenerator(
         var s = symbolTable.getStructuredTypeParent(id, i)
         if (symbolTable.getST(id, i).contains("StructRep")) {
           var l = List[String]()
-          l = l.:+(i)
+          l = l :+ i
           processStructE(id, s, l, 0)
         }
         else if (symbolTable.getST(id, i).contains("ArrayRep")) {
           if (symbolTable.getArraySType(id, i) == "StructRep") {
             var l = List[String]()
-            l = l.:+(i)
+            l = l :+ i
             val structNum = symbolTable.getArraySSize(id, i).toInt
             doIndentation()
             out.println("for Y in Integer range 0 .. " + symbolTable.getArraySSize(id, i).toInt + " loop")
@@ -4375,13 +4375,13 @@ class BodyGenerator(
       var s = symbolTable.getStructuredTypeParent(id, i)
       if (symbolTable.getST(id, i).contains("StructRep")) {
         var l = List[String]()
-        l = l.:+(i)
+        l = l :+ i
         processStructDF(s, l, 0)
       }
       else if (symbolTable.getST(id, i).contains("ArrayRep")) {
         if (symbolTable.getArraySType(id, i) == "StructRep") {
           var l = List[String]()
-          l = l.:+(i)
+          l = l :+ i
           val structNum = symbolTable.getArraySSize(id, i).toInt
           processStructDF(s, l, structNum)
         }
@@ -4805,9 +4805,9 @@ class BodyGenerator(
       var s = symbolTable.getStructuredTypeParent(id, i)
       if (symbolTable.getST(id, i).contains("StructRep")) {
         var l = List[String]()
-        l = l.:+(i)
+        l = l :+ i
         var ss = List[String]()
-        ss = ss.:+(i)
+        ss = ss :+ i
         val sL = digEndingStructs(s, ss)
         var stringFlag = ""
         for (u <- sL) {
@@ -4829,9 +4829,9 @@ class BodyGenerator(
         if (symbolTable.getArraySType(id, i) == "StructRep") {
           val structNum = symbolTable.getArraySSize(id, i).toInt
           var l = List[String]()
-          l = l.:+(i)
+          l = l :+ i
           var ss = List[String]()
-          ss = ss.:+(i)
+          ss = ss :+ i
           val sL = digEndingStructs(s, ss)
           var stringFlag = ""
           for (u <- sL) {
@@ -6032,7 +6032,7 @@ class BodyGenerator(
     for (u <- symbolTable.getSType(id)) {
       if (u == symbolTable.getSType(id).last) {
         if (symbolTable.getST(id, u).contains("StructRep")) {
-          ll = ll.:+(u)
+          ll = ll :+ u
           ll = digEndingStructs(symbolTable.getStructuredTypeParent(id, u), ll)
         }
       }

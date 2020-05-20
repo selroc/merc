@@ -458,7 +458,7 @@ class SpecificationGenerator(
       }
     }
     out.println("")
-    for (i <- 0 to m_i.size - 1) {
+    for (i <- m_i.indices) {
       if (i == m_i.size - 1) {
         doIndentation()
         out.println("Post => " + m_i(i) + ";")
@@ -570,7 +570,7 @@ class SpecificationGenerator(
       }
       else {
         out.println("Global => null,")
-        for (i <- 0 to m_i.size - 1) {
+        for (i <- m_i.indices) {
           if (i == m_i.size - 1) {
             doIndentation()
             out.println("Pre => " + m_i(i) + ";")
@@ -866,7 +866,7 @@ class SpecificationGenerator(
         val n = ctx.IDENTIFIER().getText
         var m_i = List[String]()
         if (ctx.children.contains(ctx.condition())) {
-          for (i <- 0 to ctx.condition().expression().size() - 1) {
+          for (i <- 0 until ctx.condition().expression().size()) {
             if (ctx.condition().expression(i).children.contains(ctx.condition().expression(i).GOE())) {
               m_i = (ctx.condition().expression(i).IDENTIFIER(0).getText + " " +
                 ctx.condition().expression(i).GOE().getText + " " +
@@ -936,15 +936,15 @@ class SpecificationGenerator(
     if (ctx.children.contains(ctx.IDENTIFIER())) {
       if (ctx.IDENTIFIER().getText.contains("'")) {
         val n = ctx.IDENTIFIER().getText.indexOf("'")
-        if (symbolTable.getTypeNames.filter(_ == ctx.IDENTIFIER().getText.substring(0, n)).size > 0) {
+        if (symbolTable.getTypeNames.exists(_ == ctx.IDENTIFIER().getText.substring(0, n))) {
           val t = symbolTable.getTypeRepresentation(ctx.IDENTIFIER().getText.substring(0, n))
           if (t.equals(TypeRep.UIntRep)) {
             var f = ctx.IDENTIFIER().getText
             while (f.contains("'")) {
               val num = f.indexOf("'")
-              if (symbolTable.getTypeNames.filter(_ == f.substring(0, num)).size > 0) {
+              if (symbolTable.getTypeNames.exists(_ == f.substring(0, num))) {
                 f = symbolTable.getTypeValue(f.substring(0, num))
-                f = f.substring(f.lastIndexOf(" ") + 1, f.size)
+                f = f.substring(f.lastIndexOf(" ") + 1, f.length)
               }
             }
             out.print(" range " + lowerBound + " .. " + f)
@@ -953,25 +953,25 @@ class SpecificationGenerator(
             var f = ctx.IDENTIFIER().getText
             while (f.contains("'")) {
               val num = f.indexOf("'")
-              if (symbolTable.getTypeNames.filter(_ == f.substring(0, num)).size > 0) {
+              if (symbolTable.getTypeNames.exists(_ == f.substring(0, num))) {
                 f = symbolTable.getTypeValue(f.substring(0, num))
-                f = f.substring(f.lastIndexOf(" ") + 1, f.size)
+                f = f.substring(f.lastIndexOf(" ") + 1, f.length)
               }
             }
             out.print(" range " + lowerBound + " .. " + f)
           }
           else if (t.toString.contains("ConstRep")) {
             var f = symbolTable.getTypeValue(ctx.IDENTIFIER().getText)
-            f = f.substring(f.lastIndexOf(" ") + 1, f.size)
+            f = f.substring(f.lastIndexOf(" ") + 1, f.length)
             out.print(" range " + lowerBound + " .. " + f)
           }
           else if (t.equals(TypeRep.FloatRep)) {
             var f = ctx.IDENTIFIER().getText
             while (f.contains("'")) {
               val num = f.indexOf("'")
-              if (symbolTable.getTypeNames.filter(_ == f.substring(0, num)).size > 0) {
+              if (symbolTable.getTypeNames.exists(_ == f.substring(0, num))) {
                 f = symbolTable.getTypeValue(f.substring(0, num))
-                f = f.substring(f.lastIndexOf(" ") + 1, f.size)
+                f = f.substring(f.lastIndexOf(" ") + 1, f.length)
               }
             }
             if (!lowerBound.contains(".")){
@@ -994,26 +994,26 @@ class SpecificationGenerator(
         if (upperBound.toLowerCase == "natural") {
           out.print(" range " + lowerBound + " .. 4294967295")
         }
-        else if (symbolTable.getTypeNames.filter(_ == ctx.IDENTIFIER().getText).size > 0) {
+        else if (symbolTable.getTypeNames.exists(_ == ctx.IDENTIFIER().getText)) {
           val t = symbolTable.getTypeRepresentation(ctx.IDENTIFIER().getText)
           if (t.equals(TypeRep.UIntRep)) {
             var f = symbolTable.getTypeValue(ctx.IDENTIFIER().getText)
-            f = f.substring(f.lastIndexOf(" ") + 1, f.size)
+            f = f.substring(f.lastIndexOf(" ") + 1, f.length)
             out.print(" range " + lowerBound + " .. " + f)
           }
           else if (t.equals(TypeRep.IntRep)) {
             var f = symbolTable.getTypeValue(ctx.IDENTIFIER().getText)
-            f = f.substring(f.lastIndexOf(" ") + 1, f.size)
+            f = f.substring(f.lastIndexOf(" ") + 1, f.length)
             out.print(" range " + lowerBound + " .. " + f)
           }
           else if (t.toString.contains("ConstRep")) {
             var f = symbolTable.getTypeValue(ctx.IDENTIFIER().getText)
-            f = f.substring(f.lastIndexOf(" ") + 1, f.size)
+            f = f.substring(f.lastIndexOf(" ") + 1, f.length)
             out.print(" range " + lowerBound + " .. " + f)
           }
           else if (t.equals(TypeRep.FloatRep)) {
             var f = symbolTable.getTypeValue(ctx.IDENTIFIER().getText)
-            f = f.substring(f.lastIndexOf(" ") + 1, f.size)
+            f = f.substring(f.lastIndexOf(" ") + 1, f.length)
             if (!lowerBound.contains(".")){
               lowerBound = lowerBound + ".0"
             }

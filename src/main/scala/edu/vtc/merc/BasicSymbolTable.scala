@@ -3,13 +3,17 @@ package edu.vtc.merc
 import edu.vtc.merc.SymbolTable._
 import edu.vtc.merc.TypeRep.ComponentRep
 
+/**
+ * A simple implementation of the SymbolTable trait that stores symbols in in-memory maps.
+ */
 class BasicSymbolTable extends SymbolTable {
 
   private var structuredTypeMap = Map[String, (TypeRep.Rep, String)]()
   private var sTypes = Map[String, ComponentRep]()
   private var typeMap = Map[String, (TypeRep.Rep, String)]()
 
-  //Adds new structured type.
+
+  // Adds new structured type.
   def addStructuredName(name: String, typeRep: TypeRep.Rep, value: String): Unit = {
     // TODO: Include in the message the position of the error in the source text.
     if (structuredTypeMap.contains(name))
@@ -18,12 +22,14 @@ class BasicSymbolTable extends SymbolTable {
     structuredTypeMap = structuredTypeMap + (name -> (typeRep, value))
   }
 
-  //Adds message struct parameters.
+
+  // Adds message struct parameters.
   def addSTypes(name: String, p: ComponentRep): Unit = {
     sTypes = sTypes + (name -> p)
   }
 
-  //Adds new unstructured type.
+
+  // Adds new unstructured type.
   def addTypeName(name: String, typeRep: TypeRep.Rep, value: String): Unit = {
     // TODO: Include in the message the position of the error in the source text.
     if (typeMap.contains(name))
@@ -32,21 +38,24 @@ class BasicSymbolTable extends SymbolTable {
     typeMap = typeMap + (name -> (typeRep, value))
   }
 
-  //Returns iterable of all structured type names.
+
+  // Returns iterable of all structured type names.
   def getStructuredTypeNames: Iterable[String] = {
     structuredTypeMap.keys
   }
 
-  //Returns iterable of variable names in a message struct.
+
+  // Returns iterable of variable names in a message struct.
   def getSType(name: String): Iterable[String] = {
     sTypes(name).components.map(x => x._1)
   }
 
-  //Returns the type of a supplied variable name in a message struct.
+
+  // Returns the type of a supplied variable name in a message struct.
   def getST(name: String, subName: String): String = {
     val c = sTypes(name).components.filter(_._1 == subName).map(x => x._2)
     var v = ""
-    if (!c.isEmpty) {
+    if (c.nonEmpty) {
       v = c.head.toString
       if (v.contains("(")) {
         if (v.substring(0, v.indexOf("(")).contentEquals("IDRep")) {
@@ -63,22 +72,25 @@ class BasicSymbolTable extends SymbolTable {
     v
   }
 
-  //Returns the structured type variable name of a given variable within a message struct.
+
+  // Returns the structured type variable name of a given variable within a message struct.
   def getStructuredTypeParent(name: String, subName: String): String = {
     var d = ""
     val c = sTypes(name).components.filter(_._1 == subName).map(x => x._3)
-    if (!c.isEmpty) {
+    if (c.nonEmpty) {
       d = c.head.toString
     }
     d
   }
 
-  //Returns iterable of unstructured type variable names.
+
+  // Returns iterable of unstructured type variable names.
   def getTypeNames: Iterable[String] = {
     typeMap.keys
   }
 
-  //Returns the type of a structured type.
+
+  // Returns the type of a structured type.
   def getStructuredType(name: String): TypeRep.Rep = {
     // TODO: Include in the message the position of the error in the source text.
     if (!structuredTypeMap.contains(name))
@@ -87,7 +99,8 @@ class BasicSymbolTable extends SymbolTable {
     structuredTypeMap(name)._1
   }
 
-  //Returns the type of an unstructured variable.
+
+  // Returns the type of an unstructured variable.
   def getTypeRepresentation(name: String): TypeRep.Rep = {
     // TODO: Include in the message the position of the error in the source text.
     if (!typeMap.contains(name))
@@ -96,7 +109,8 @@ class BasicSymbolTable extends SymbolTable {
       typeMap(name)._1
   }
 
-  //Returns the stored value of a given unstructured type.
+
+  // Returns the stored value of a given unstructured type.
   def getTypeValue(name: String): String = {
     if (!typeMap.contains(name))
       throw new UnknownObjectNameException(s"$name is not the name of an object")
@@ -104,7 +118,8 @@ class BasicSymbolTable extends SymbolTable {
     typeMap(name)._2
   }
 
-  //Returns Array inner type.
+
+  // Returns Array inner type.
   def getArrayType(name: String): TypeRep.Rep = {
     if (!typeMap.contains(name)) {
       throw new UnknownObjectNameException(s"$name is not the name of an object")
@@ -126,14 +141,15 @@ class BasicSymbolTable extends SymbolTable {
     TypeRep.NoTypeRep
   }
 
-  //Returns Array inner type from MStruct parameters.
+
+  // Returns Array inner type from MStruct parameters.
   def getArraySType(name: String, id: String): String = {
     if (!sTypes.contains(name)) {
       throw new UnknownObjectNameException(s"$name is not the name of an object")
     }
     val c = sTypes(name).components.filter(_._1 == id).map(x => x._2)
     var v = ""
-    if (!c.isEmpty) {
+    if (c.nonEmpty) {
       v = c.head.toString
       if (v.contains(",")){
         val index1 = v.lastIndexOf('(') + 1
@@ -153,7 +169,8 @@ class BasicSymbolTable extends SymbolTable {
     v
   }
 
-  //Returns Array size (upper value).
+
+  // Returns Array size (upper value).
   def getArraySize(name: String): String = {
     if (!typeMap.contains(name))
       throw new UnknownObjectNameException(s"$name is not the name of an object")
@@ -165,14 +182,15 @@ class BasicSymbolTable extends SymbolTable {
     s1
   }
 
-  //Returns Array size (upper value).
+
+  // Returns Array size (upper value).
   def getArraySSize(name: String, id: String): String = {
     if (!sTypes.contains(name))
       throw new UnknownObjectNameException(s"$name is not the name of an object")
 
     val c = sTypes(name).components.filter(_._1 == id).map(x => x._2)
     var v = ""
-    if (!c.isEmpty) {
+    if (c.nonEmpty) {
       v = c.head.toString
       if (v.contains(",")){
         val index1 = v.indexOf(',')
@@ -183,7 +201,8 @@ class BasicSymbolTable extends SymbolTable {
     v
   }
 
-  //Returns a list of all message structs by variable name.
+
+  // Returns a list of all message structs by variable name.
   def getMStructs: List[String] = {
     var MSs = List[String]()
     for (i <- structuredTypeMap) {
@@ -194,8 +213,9 @@ class BasicSymbolTable extends SymbolTable {
     MSs
   }
 
-  //Checks to see if a given name is already present in
-  //the map of unstructured types. 0 for No, 1 for Yes.
+
+  // Checks to see if a given name is already present in the map of unstructured types.
+  // 0 for No, 1 for Yes.
   def checkTypes(name: String): Int = {
     val n = getTypeNames
     var b = 0
@@ -207,8 +227,9 @@ class BasicSymbolTable extends SymbolTable {
     b
   }
 
-  //Checks to see if a given name is already present in
-  //the map of structured types. 0 for No, 1 for Yes.
+
+  // Checks to see if a given name is already present in the map of structured types.
+  // 0 for No, 1 for Yes.
   def checkSTypes(name: String): Int = {
     val n = getStructuredTypeNames
     var b = 0
@@ -226,7 +247,8 @@ class BasicSymbolTable extends SymbolTable {
     b
   }
 
-  //Returns stored value on a structured type.
+
+  // Returns stored value on a structured type.
   def getStructuredConstraint(name: String): String = {
     if (!structuredTypeMap.contains(name))
       throw new UnknownTypeNameException(s"$name is not the name of an type")

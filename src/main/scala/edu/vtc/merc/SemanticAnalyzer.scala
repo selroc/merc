@@ -6,9 +6,9 @@ import edu.vtc.merc.TypeRep.{ComponentRep, UnionRep}
 import scala.util.control.Breaks._
 
 class SemanticAnalyzer(
-                        nameOfFile : String,
-                        symbolTable: BasicSymbolTable,
-                        reporter   : Reporter) extends MercBaseVisitor[(String, TypeRep.Rep, String)] {
+  nameOfFile : String,
+  symbolTable: BasicSymbolTable,
+  reporter   : Reporter) extends MercBaseVisitor[(String, TypeRep.Rep, String)] {
 
 
   /*override def visitMessage_struct_type_spec(ctx: MercParser.Message_struct_type_specContext): TypeRep.Rep = {
@@ -83,9 +83,9 @@ class SemanticAnalyzer(
     val dotdot = ctx.DOTDOT()
     val constraint = first.toString + dotdot.toString + second.toString
     constraint
-  }*/
+  }
 
-  /*override def enterMessage_struct_type_spec(ctx: MercParser.Message_struct_type_specContext): Unit = {
+  override def enterMessage_struct_type_spec(ctx: MercParser.Message_struct_type_specContext): Unit = {
     val MSName = ctx.IDENTIFIER().getText
     val parameters: List[TypeRep.Rep]
 
@@ -95,7 +95,7 @@ class SemanticAnalyzer(
 
     symbolTable.addObjectName(MSName, MercParser.Message_struct_type_specContext)
 
-    /*val typedefCount = ctx.struct_body.type_def.size
+    val typedefCount = ctx.struct_body.type_def.size
     val constCount = ctx.struct_body.constant_def.size
     val decCount = ctx.struct_body.declaration.size
     val sid = ctx.IDENTIFIER.getText
@@ -122,18 +122,18 @@ class SemanticAnalyzer(
         val adder = SymbolInfo(sid, id.toString, tO.toString, v.toString)
         symbolTable + sid -> adder
       }
-    }*/
+    }
   }
 
   override def enterStruct_body(ctx: MercParser.Struct_bodyContext): Unit = {
 
-   /* if (decCount > 0) {
+    if (decCount > 0) {
       val id = ctx.declaration(i).IDENTIFIER().getText
       val tO = ctx.declaration(i).type_specifier().getText
       val v = ctx.declaration(i).CONSTANT().getText
       (id, tO, v)
-    }*/
-    /*else if (ctx.getChild(1).getText == "struct_type_spec") {
+    }
+    else if (ctx.getChild(1).getText == "struct_type_spec") {
 
   }
   else if (ctx.getChild(1).getText == "enum_type_spec") {
@@ -141,15 +141,15 @@ class SemanticAnalyzer(
   }
   else if (ctx.getChild(1).getText == "union_type_spec") {
 
-  }*/
-   /* else if (constCount > 0) {
+  }
+    else if (constCount > 0) {
       val (id, tO, v) = enterConstant_def2(ctx.constant_def(i))
       (id, tO, v)
     }
     else if (typedefCount > 0) {
       val (id, tO, v) = enterType_def2(ctx.type_def(i))
       (id, tO, v)
-    }*/
+    }
   }
 
 
