@@ -1,9 +1,6 @@
 package edu.vtc.merc
 
-import java.io.{File, PrintWriter}
-
-import edu.vtc.merc.MercParser._
-import org.antlr.v4.runtime.tree._
+import java.io.File
 
 class BodyGenerator(
   templateFolder : String,

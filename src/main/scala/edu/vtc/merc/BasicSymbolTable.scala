@@ -19,7 +19,7 @@ class BasicSymbolTable extends SymbolTable {
     if (structuredTypeMap.contains(name))
       throw new DuplicateObjectNameException(s"$name already names an object")
 
-    structuredTypeMap = structuredTypeMap + (name -> (typeRep, value))
+    structuredTypeMap = structuredTypeMap + (name -> ((typeRep, value)))
   }
 
 
@@ -35,7 +35,7 @@ class BasicSymbolTable extends SymbolTable {
     if (typeMap.contains(name))
       throw new DuplicateTypeNameException(s"$name already names a type")
 
-    typeMap = typeMap + (name -> (typeRep, value))
+    typeMap = typeMap + (name -> ((typeRep, value)))
   }
 
 

@@ -21,8 +21,8 @@ class SemanticSpec extends UnitSpec {
 
       val fullName = "testData" + File.separator + "Semantics" + File.separator + fileName
 
-      val input  = new ANTLRFileStream(fullName)
-      val lexer  = new MercLexer(input)
+      val codePointCharStream = CharStreams.fromFileName(fullName)
+      val lexer  = new MercLexer(codePointCharStream)
       val tokens = new CommonTokenStream(lexer)
       val parser = new MercParser(tokens)
       val tree   = parser.specification()

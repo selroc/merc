@@ -1,6 +1,6 @@
 package edu.vtc.merc
 
-import edu.vtc.merc.TypeRep.{ComponentRep, UnionRep}
+import edu.vtc.merc.TypeRep.ComponentRep
 
 class STPopulation(
   nameOfFile : String,

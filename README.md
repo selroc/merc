@@ -15,5 +15,5 @@ Build Instructions
 Merc is an [SBT](https://www.scala-sbt.org/) based project. After installing a suitable
 JVM (we recommend version 11.x.y for some x, y) and SBT, run an SBT interactive session while
 inside the top level Merc folder. There you can use the usual SBT commands such as `compile`,
-`package`, and `test` to build and exercise the code. Any IDE that supports SBT integration,
-such as IntelliJ can also be used.
+`package`, `test`, and `assembly` to build and exercise the code. Any IDE that supports SBT
+integration, such as IntelliJ can also be used.

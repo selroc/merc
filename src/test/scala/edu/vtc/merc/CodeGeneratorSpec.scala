@@ -49,8 +49,8 @@ class CodeGeneratorSpec extends UnitSpec {
       val folderName = "testData" + File.separator + "CodeGeneration" + File.separator
       val fullName = folderName + sourceName
 
-      val input  = new ANTLRFileStream(fullName)
-      val lexer  = new MercLexer(input)
+      val codePointCharStream = CharStreams.fromFileName(fullName)
+      val lexer  = new MercLexer(codePointCharStream)
       val tokens = new CommonTokenStream(lexer)
       val parser = new MercParser(tokens)
       val tree   = parser.specification()

@@ -44,7 +44,7 @@ object Main {
 
       // Decide what to return.
       // TODO: Return None if an invalid switch is found.
-      if (sourceName == "") None else Some(switchMap, sourceName)
+      if (sourceName == "") None else Some((switchMap, sourceName))
     }
   }
 
@@ -62,10 +62,10 @@ object Main {
     val templateFolder = switchMap.getOrElse('t', ".")
 
     // Create a stream that reads from the specified file.
-    val input = new ANTLRFileStream(sourceName)
+    val codePointCharStream = CharStreams.fromFileName(sourceName)
 
     // Parse the input file as XDR.
-    val lexer  = new MercLexer(input)
+    val lexer  = new MercLexer(codePointCharStream)
     val tokens = new CommonTokenStream(lexer)
     val parser = new MercParser(tokens)
     val tree   = parser.specification()

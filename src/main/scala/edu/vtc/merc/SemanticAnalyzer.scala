@@ -1,10 +1,5 @@
 package edu.vtc.merc
 
-import edu.vtc.merc
-import edu.vtc.merc.TypeRep.{ComponentRep, UnionRep}
-
-import scala.util.control.Breaks._
-
 class SemanticAnalyzer(
   nameOfFile : String,
   symbolTable: BasicSymbolTable,

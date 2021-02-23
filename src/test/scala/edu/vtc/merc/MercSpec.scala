@@ -25,11 +25,11 @@ class MercSpec extends UnitSpec {
     )
 
     val expectedResults: List[Option[(Map[Char, String], String)]] = List(
-      Some(Map(), "file.mxdr"),
-      Some(Map('t' -> "folder"), "file.mxdr"),
-      Some(Map('k' -> ""), "file.mxdr"),
-      Some(Map('k' -> "", 't' -> "folder"), "file.mxdr"),
-      Some(Map('k' -> "", 't' -> "folder"), "file.mxdr"),
+      Some((Map(), "file.mxdr")),
+      Some((Map('t' -> "folder"), "file.mxdr")),
+      Some((Map('k' -> ""), "file.mxdr")),
+      Some((Map('k' -> "", 't' -> "folder"), "file.mxdr")),
+      Some((Map('k' -> "", 't' -> "folder"), "file.mxdr")),
       None,
       None
     )
