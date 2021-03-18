@@ -5,6 +5,7 @@ build
 
 # SBT generated folders.
 target
+.bsp
 
 # LaTeX artifacts.
 main.aux
