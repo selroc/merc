@@ -3987,10 +3987,10 @@ class BodyGenerator(
       indentationLevel -= 1
     }
     doIndentation()
-    out.println("Position : XDR_Index_Type;")
+    out.println("Position : Data_Index_Type;")
     if (ctx.declaration(0).getText != "void") {
       doIndentation()
-      out.println("Last : XDR_Index_Type;")
+      out.println("Last : Data_Index_Type;")
     }
     for (i <- symbolTable.getSType(id)) {
       if (symbolTable.getST(id, i).contains("TimeSpanRep")) {
@@ -4367,7 +4367,7 @@ class BodyGenerator(
     out.println("is")
     indentationLevel += 1
     doIndentation()
-    out.println("Position : XDR_Index_Type;")
+    out.println("Position : Data_Index_Type;")
     for (i <- symbolTable.getSType(id)) {
       var s = symbolTable.getStructuredTypeParent(id, i)
       if (symbolTable.getST(id, i).contains("StructRep")) {
@@ -4531,7 +4531,7 @@ class BodyGenerator(
       }
     }
     doIndentation()
-    out.println("Last : XDR_Index_Type;")
+    out.println("Last : Data_Index_Type;")
     indentationLevel -= 1
     doIndentation()
     out.println("begin")
